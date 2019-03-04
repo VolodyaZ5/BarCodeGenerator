@@ -1,0 +1,2 @@
+# BarCodeGenerator
+Генератор штрих-кодов
