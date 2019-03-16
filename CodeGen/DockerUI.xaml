@@ -5,25 +5,39 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeGen"
              mc:Ignorable="d" 
-             MinWidth="250" MinHeight="115" Loaded="UserControl_Loaded" Background="LightGray">
-    <Grid Margin="0,0,0,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <StackPanel>
-            <Label x:Name="lblCountBarCode" Grid.Row="0" Grid.Column="0"
-                   Content="Количество штрих-кодов:"/>
-            <Label x:Name="lblFirstNumb" Grid.Row="1" Grid.Column="0"
-                   Content="Номер первого штрих-кода:"/>
+             MinWidth="250" Loaded="UserControl_Loaded" Background="LightGray">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel x:Name="mainPanel" Margin="0 0 0 0">
+            <TabControl Name="tabControls" Height="200">
+                <TabItem Header="EAN-13" Name="tabItemEan13">
+                    <Grid ShowGridLines="True"  Background="#FFE5E5E5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.7*"/>
+                            <ColumnDefinition Width="0.7*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="lblCountBarCode" Grid.Row="0" Grid.Column="0" Content="Количество штрих-кодов:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtCountBarCode" Grid.Row="0" Grid.Column="1" Height="25" PreviewTextInput="txtInputOnlyDigits_PreviewTextInput"/>
+
+                        <Label x:Name="lblFirstNumbBarCode" Grid.Row="1" Grid.Column="0" Content="Номер первого:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtFirstNumb" Grid.Row="1" Grid.Column="1" Height="25" PreviewTextInput="txtInputOnlyDigits_PreviewTextInput"/>
+
+                        <Label x:Name="lblPrefix" Grid.Row="2" Grid.Column="0" Content="Префикс штрих-кода:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtPrefixBarCode" Grid.Row="2" Grid.Column="1" Height="25" PreviewTextInput="txtInputOnlyDigits_PreviewTextInput"/>
+
+                        <Button x:Name="btnGenerate" Grid.Row="3" Grid.ColumnSpan="2" Content="Generate" FontFamily="Tahoma" FontSize="18"
+                                FontWeight="DemiBold" Click="btnGenerate_Click"/>
+                    </Grid>                    
+                    
+                </TabItem>
+            </TabControl>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 
 
 </UserControl>

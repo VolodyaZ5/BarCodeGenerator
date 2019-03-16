@@ -20,6 +20,12 @@ namespace CodeGen
     {
         private corel.Application corelApp;
         private string currentTheme;
+
+        private int countBarCode; //Количество штрих-кодов
+        private int firstNumbBarCode; //Номер первого штрих-кода
+        private int prefixBarCode; //Префикс штрих-кодов
+
+
         public DockerUI(object app)
         {
             InitializeComponent();
@@ -34,6 +40,7 @@ namespace CodeGen
             }
 
         }
+        
         #region theme select
         //Keys resources name follow the resource order to add a new value, order to works you need add 5 resources colors and Resources/Colors.xaml
         //1º is default, is the same name of StyleKeys string array
@@ -110,6 +117,77 @@ namespace CodeGen
             catch { }
 
         }
+        #endregion
+
+        private void btnGenerate_Click(object sender, RoutedEventArgs e)
+        {
+            if (CheckEmptyTxtBoxes())
+            {
+                int.TryParse(txtCountBarCode.Text, out countBarCode);
+                int.TryParse(txtFirstNumb.Text, out firstNumbBarCode);
+                int.TryParse(txtPrefixBarCode.Text, out prefixBarCode);
+
+                BarCode bc = new BarCode(countBarCode, firstNumbBarCode, prefixBarCode);
+
+                MessageBox.MsgShow(corelApp, $"Count = {bc.CountBarCode}, FirstNumber = {bc.FirstNumbBarCode}, Prefix = {bc.PrefixBarCode}");
+            }
+        }
+
+        #region Проверки ошибочного ввода
+        /// <summary>
+        /// Проверка на пустые textBox'ы
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckEmptyTxtBoxes()
+        {
+            if (txtCountBarCode.Text.Length == 0 | txtFirstNumb.Text.Length == 0 | txtPrefixBarCode.Text.Length == 0)
+            {
+                MessageBox.MsgShow(corelApp, "Заполните пустые поля!", "Недопустимый ввод", MessageBox.DialogButtons.Ok);
+                if (txtCountBarCode.Text.Length == 0)
+                {
+                    txtCountBarCode.Focus();
+                }
+                else if (txtFirstNumb.Text.Length == 0)
+                {
+                    txtFirstNumb.Focus();
+                }
+                else
+                {
+                    txtPrefixBarCode.Focus();
+                }
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+
+        }
+
+        /// <summary>
+        /// Обработчик на ввод только цифр
+        /// </summary>
+        /// <param name="sender">Элемент инициирующий событие</param>
+        /// <param name="e">Аргумент textBox'a</param>
+        private void txtInputOnlyDigits_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (IsNumber(e.Text) == false)
+            {
+                e.Handled = true;
+            }            
+        }
+
+        /// <summary>
+        /// Проверка на число
+        /// </summary>
+        /// <param name="text">Входная строка на проверку</param>
+        /// <returns></returns>
+        private bool IsNumber(string text)
+        {
+            int tempInt;
+            return int.TryParse(text, out tempInt);
+        } 
         #endregion
     }
 }

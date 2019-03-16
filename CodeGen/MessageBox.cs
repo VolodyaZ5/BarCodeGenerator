@@ -71,7 +71,8 @@
 #elif X8
                 int result = (int)System.Windows.MessageBox.Show(message,caption,(System.Windows.MessageBoxButton)((int)buttons));
 #else
-                int result = corelApp.FrameWork.ShowMessageBox(message, caption, (int)buttons);
+                //int result = corelApp.FrameWork.ShowMessageBox(message, caption, (int)buttons);
+                int result = (int)System.Windows.MessageBox.Show(message, caption, (System.Windows.MessageBoxButton)((int)buttons));
 
 #endif
                 return (DialogResult)result;
