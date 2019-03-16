@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <!--
-Copyright (c) 2008 Corel Corporation.
-
 Permission is hereby granted, free of charge, to any person or organization obtaining a copy of the software and accompanying 
 documentation covered by this license (the "Software") to use, reproduce, display, distribute, execute, and transmit the Software, 
 and to prepare derivative works of the Software, and to permit third-parties to whom the Software is furnished to do so, all subject 
@@ -19,22 +17,17 @@ HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE FOR ANY DAMAGES OR OTHER L
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ************************************************************************************************************************************
-This file adds controls to the current workspace.  It is only executed once per workspace (e.g. if you make changes, you must launch 
-with F8 to reapply the changes.
+This file defines new UI elements that all workspaces will contain
 ************************************************************************************************************************************
 -->
-<xsl:stylesheet version="1.0"
-								xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-								xmlns:frmwrk="Corel Framework Data"
-								exclude-result-prefixes="frmwrk">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:frmwrk="Corel Framework Data">
   <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
   <!-- Use these elements for the framework to move the container from the app config file to the user config file -->
   <!-- Since these elements use the frmwrk name space, they will not be executed when the XSLT is applied to the user config file -->
   <frmwrk:uiconfig>
     <!-- The Application Info should always be the topmost frmwrk element -->
-    <frmwrk:compositeNode xPath="/uiConfig/commandBars/commandBarData[@guid='3eaa9bbe-28fd-4672-9128-02974ee96332']"/>
-    <frmwrk:compositeNode xPath="/uiConfig/frame"/>
+    <frmwrk:applicationInfo userConfiguration="true" />
   </frmwrk:uiconfig>
 
   <!-- Copy everything -->
@@ -44,15 +37,42 @@ with F8 to reapply the changes.
     </xsl:copy>
   </xsl:template>
 
-  <!-- Put the new command at the end of the 'dockers' menu -->
-  <xsl:template match="commandBarData[@guid='3eaa9bbe-28fd-4672-9128-02974ee96332']/menu">
+  <xsl:template match="uiConfig/items">
     <xsl:copy>
       <xsl:apply-templates select="node()|@*"/>
-      <!-- Make sure we don't read the menu item it it already exists -->
-      <xsl:if test="not(./item[@guidRef='7E4D6F45-A9A4-4CE2-A271-84D0D2869C2B'])">
-				<item guidRef="7E4D6F45-A9A4-4CE2-A271-84D0D2869C2B"/>
-			</xsl:if>
+
+      <!-- Define the button which shows the docker -->
+      <itemData guid="a5fb7525-a1f5-4dc9-aee3-c44a70594c7f" noBmpOnMenu="true"
+                type="checkButton"
+                check="*Docker('a2a19d17-e07d-4b86-829d-55aa60a30292')"
+                dynamicCategory="2cc24a3e-fe24-4708-9a74-9c75406eebcd"
+                userCaption="Ean_Gen"
+                enable="true"/>
+
+      <!-- Define the web control which will be placed on our docker -->
+      <itemData guid="0b08f54d-95ac-41d3-a60c-73e5e361c01a"
+                type="wpfhost"
+                hostedType="Addons\CodeGen\CodeGen.dll,CodeGen.DockerUI"
+                enable="true"/>
+
     </xsl:copy>
   </xsl:template>
-  
+
+  <xsl:template match="uiConfig/dockers">
+    <xsl:copy>
+      <xsl:apply-templates select="node()|@*"/>
+
+      <!-- Define the web docker -->
+      <dockerData guid="a2a19d17-e07d-4b86-829d-55aa60a30292"
+                  userCaption="Ean_Gen"
+                  wantReturn="true"
+                  focusStyle="noThrow">
+        <container>
+          <!-- add the webpage control to the docker -->
+          <item dock="fill" margin="0,0,0,0" guidRef="0b08f54d-95ac-41d3-a60c-73e5e361c01a"/>
+        </container>
+      </dockerData>
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>

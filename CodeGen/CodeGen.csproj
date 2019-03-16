@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DEAD7464-AC79-4E0D-BB8B-86F0E6A92869}</ProjectGuid>
+    <ProjectGuid>{279DFD37-67F4-457F-A24A-AE840EF214CD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BarCodeWPF</RootNamespace>
-    <AssemblyName>BarCodeWPF</AssemblyName>
+    <RootNamespace>CodeGen</RootNamespace>
+    <AssemblyName>CodeGen</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -55,15 +55,16 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsBase" />
-    <Reference Include="c:\program files\corel\coreldraw graphics suite x7\programs64\Assemblies\Corel.Interop.VGCore.dll" Condition="'$(Configuration)'=='X7 Debug'">
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup Label="VGCoreReferences">
+    <Reference Label="X7Reference" Include="c:\program files\corel\coreldraw graphics suite x7\programs64\Assemblies\Corel.Interop.VGCore.dll" Condition="'$(Configuration)'=='X7 Debug'">
       <Name>Corel.Interop.VGCore</Name>
       <Private>False</Private>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="c:\program files\corel\coreldraw graphics suite x7\programs64\Assemblies\Corel.Interop.VGCore.dll" Condition="'$(Configuration)'=='X7 Release'">
+    <Reference Label="X7Reference" Include="c:\program files\corel\coreldraw graphics suite x7\programs64\Assemblies\Corel.Interop.VGCore.dll" Condition="'$(Configuration)'=='X7 Release'">
       <Name>Corel.Interop.VGCore</Name>
       <Private>False</Private>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +75,26 @@
     <Compile Include="DockerUI.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Converters\ResourceToMediaImageConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MessageBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\Images.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -102,7 +123,6 @@
   <ItemGroup>
     <Content Include="AppUI.xslt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="UserUI.xslt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -119,39 +139,24 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup Condition="'$(Configuration)'=='X7 Debug'">
+  <PropertyGroup Label="X7BuildCopyCommand" Condition="'$(Configuration)'=='X7 Debug'">
     <PostBuildEvent>
       if not exist "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" md "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)"
-      copy "$(ProjectDir)bin\Debug\$(TargetFileName)" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
-      copy "$(ProjectDir)CorelDrw.addon" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
-      copy "$(ProjectDir)AppUI.xslt" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
-      copy "$(ProjectDir)UserUI.xslt" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
-      copy "$(ProjectDir)bin\Debug\$(SolutionName).pdb" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
+      xcopy "$(ProjectDir)bin\Debug\*.*" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y /d /e
     </PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='X7 Release'">
+  <PropertyGroup Label="X7BuildCopyCommand" Condition="'$(Configuration)'=='X7 Release'">
     <PostBuildEvent>
       if not exist "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" md "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)"
-      copy "$(ProjectDir)bin\Release\X7\$(SolutionName)\$(TargetFileName)" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
-      copy "$(ProjectDir)CorelDrw.addon" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
-      copy "$(ProjectDir)AppUI.xslt" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
-      copy "$(ProjectDir)UserUI.xslt" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y
+      xcopy "$(ProjectDir)bin\Release\X7\$(SolutionName)\*.*" "c:\program files\corel\coreldraw graphics suite x7\programs64\addons\$(SolutionName)" /y /d /e
     </PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='X7 Debug'">
+  <PropertyGroup Label="X7Startup" Condition="'$(Configuration)'=='X7 Debug'">
     <StartAction>Program</StartAction>
     <StartProgram>c:\program files\corel\coreldraw graphics suite x7\programs64\CorelDRW.exe</StartProgram>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='X7 Release'">
+  <PropertyGroup Label="X7Startup" Condition="'$(Configuration)'=='X7 Release'">
     <StartAction>Program</StartAction>
     <StartProgram>c:\program files\corel\coreldraw graphics suite x7\programs64\CorelDRW.exe</StartProgram>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>if not exist "C:\Program Files\Corel\CorelDRAW Graphics Suite X7\Programs64\Addons\$(SolutionName)" md "C:\Program Files\Corel\CorelDRAW Graphics Suite X7\Programs64\Addons\$(SolutionName)" 
-copy "$(ProjectDir)bin\Debug\$(TargetFileName)" "C:\Program Files\Corel\CorelDRAW Graphics Suite X7\Programs64\Addons\$(SolutionName)" /y
-copy "$(ProjectDir)CorelDrw.addon" "C:\Program Files\Corel\CorelDRAW Graphics Suite X7\Programs64\Addons\$(SolutionName)" /y 
-copy "$(ProjectDir)AppUI.xslt" "C:\Program Files\Corel\CorelDRAW Graphics Suite X7\Programs64\Addons\$(SolutionName)" /y 
-copy "$(ProjectDir)UserUI.xslt" "C:\Program Files\Corel\CorelDRAW Graphics Suite X7\Programs64\Addons\$(SolutionName)" /y 
-copy "$(ProjectDir)bin\Debug\$(SolutionName).pdb" "C:\Program Files\Corel\CorelDRAW Graphics Suite X7\Programs64\Addons\$(SolutionName)" /y</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BarCodeWPF")]
+[assembly: AssemblyTitle("CodeGen")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("BarCodeWPF")]
+[assembly: AssemblyProduct("CodeGen")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("dead7464-ac79-4e0d-bb8b-86f0e6a92869")]
+[assembly: Guid("279dfd37-67f4-457f-a24a-ae840ef214cd")]
 
 // Version information for an assembly consists of the following four values:
 //
