@@ -11,6 +11,12 @@ namespace CodeGen
         private int firstNumbBarCode; //Номер первого штрих-кода
         private int prefixBarCode; //Префикс штрих-кодов        
 
+        private int countSymb; //Количество символов номера первого штрих-кода и префикса
+        private int countAddZeros; //Количество нулей, которые нужно добавить
+        private const int ean13Length = 12; //Длина данных для штрих кода
+        private string outputEan13Str; //Выходная строка с добавлением недостающих нулей                       
+        private int controlDigit; //Контрольная цифра штрих-кода
+
         #region Properties
         public int CountBarCode
         {
@@ -28,6 +34,11 @@ namespace CodeGen
         {
             get { return prefixBarCode; }
             set { prefixBarCode = value; }
+        }
+        public string OutputEan13Str
+        {
+            get { return outputEan13Str; }
+            set { outputEan13Str = value; }
         }
         #endregion
 

@@ -24,6 +24,7 @@ namespace CodeGen
         private int countBarCode; //Количество штрих-кодов
         private int firstNumbBarCode; //Номер первого штрих-кода
         private int prefixBarCode; //Префикс штрих-кодов
+        private const int ean13Length = 12; //Длина данных для штрих кода
 
 
         public DockerUI(object app)
@@ -36,7 +37,7 @@ namespace CodeGen
             }
             catch (Exception)
             {
-                global::System.Windows.MessageBox.Show("VGCore Erro");
+                global::System.Windows.MessageBox.Show("VGCore Error");
             }
 
         }
@@ -128,8 +129,9 @@ namespace CodeGen
                 int.TryParse(txtPrefixBarCode.Text, out prefixBarCode);
 
                 BarCode bc = new BarCode(countBarCode, firstNumbBarCode, prefixBarCode);
-
-                MessageBox.MsgShow(corelApp, $"Count = {bc.CountBarCode}, FirstNumber = {bc.FirstNumbBarCode}, Prefix = {bc.PrefixBarCode}");
+                bc.AddZeroToInput();
+                bc.CalculateControlDigit();
+                txtShowBarCode.Text = bc.OutputEan13Str;                
             }
         }
 
@@ -175,7 +177,9 @@ namespace CodeGen
             if (IsNumber(e.Text) == false)
             {
                 e.Handled = true;
-            }            
+            }
+            txtFirstNumb.MaxLength = ean13Length - txtPrefixBarCode.Text.Length;
+            txtPrefixBarCode.MaxLength = ean13Length - txtFirstNumb.Text.Length;
         }
 
         /// <summary>
