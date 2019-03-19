@@ -14,7 +14,7 @@ namespace CodeGen
         private int countSymb; //Количество символов номера первого штрих-кода и префикса
         private int countAddZeros; //Количество нулей, которые нужно добавить
         private const int ean13Length = 12; //Длина данных для штрих кода
-        private string outputEan13Str; //Выходная строка с добавлением недостающих нулей                       
+        private string outputEan13Str; //Выходная строка с добавлением недостающих нулей и контрольной цифры
         private int controlDigit; //Контрольная цифра штрих-кода
 
         #region Properties
@@ -37,7 +37,7 @@ namespace CodeGen
         }
         public string OutputEan13Str
         {
-            get { return outputEan13Str; }
+            get { return outputEan13Str + controlDigit; }
             set { outputEan13Str = value; }
         }
         #endregion
