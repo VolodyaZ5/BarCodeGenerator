@@ -131,7 +131,7 @@ namespace CodeGen
                 BarCode bc = new BarCode(countBarCode, firstNumbBarCode, prefixBarCode);
                 bc.AddZeroToInput();
                 bc.CalculateControlDigit();
-                txtShowBarCode.Text = bc.OutputEan13Str;                
+                txtShowBarCode.Text = bc.CalculateBarcodeString(bc.OutputEan13Str);
             }
         }
 

@@ -16,7 +16,7 @@
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>                            
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
@@ -35,7 +35,7 @@
                                 FontWeight="DemiBold" Click="btnGenerate_Click"/>
                         <TextBox x:Name="txtShowBarCode" Grid.Row="4" Grid.ColumnSpan="2" Margin="5" 
                                      VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                     FontFamily="EAN-13" FontSize="55"/>
+                                     FontFamily="Code EAN13" FontSize="55"/>
                     </Grid>                    
                     
                 </TabItem>
