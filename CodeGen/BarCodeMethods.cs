@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using corel = Corel.Interop.VGCore;
+using System.IO;
 
 namespace CodeGen
 {
@@ -102,15 +103,15 @@ namespace CodeGen
                     barcode += (char)(75 + Convert.ToInt32(chain.Substring(i, 1)));
                 }
             }
-            barcode += "*";
+            barcode += "*"; //Добавить символ-разделитель
 
             for (i = 7; i <= 12; i++)
             {
                 barcode += (char)(97 + Convert.ToInt32(chain.Substring(i, 1)));
             }
-            barcode += "+";
+            barcode += "+"; //Добавить финишный символ
 
             return barcode;
-        }
+        }        
     }
 }

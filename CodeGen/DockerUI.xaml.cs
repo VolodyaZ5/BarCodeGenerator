@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using corel = Corel.Interop.VGCore;
+using System.IO;
 
 namespace CodeGen
 {
@@ -122,6 +123,7 @@ namespace CodeGen
 
         private void btnGenerate_Click(object sender, RoutedEventArgs e)
         {
+            txtShowBarCode.Text = string.Empty;
             if (CheckEmptyTxtBoxes())
             {
                 int.TryParse(txtCountBarCode.Text, out countBarCode);
@@ -129,9 +131,24 @@ namespace CodeGen
                 int.TryParse(txtPrefixBarCode.Text, out prefixBarCode);
 
                 BarCode bc = new BarCode(countBarCode, firstNumbBarCode, prefixBarCode);
-                bc.AddZeroToInput();
-                bc.CalculateControlDigit();
-                txtShowBarCode.Text = bc.CalculateBarcodeString(bc.OutputEan13Str);
+
+                using (StreamWriter sw = new StreamWriter("eanCodes.txt", false))
+                {
+                    for (int i = firstNumbBarCode; i < (firstNumbBarCode + countBarCode); i++)
+                    {
+                        BarCode bcWrite = new BarCode(countBarCode, i, prefixBarCode);
+                        sw.WriteLine(bcWrite.CalculateBarcodeString(bcWrite.OutputEan13Str + bcWrite.ControlDigit.ToString()));
+                    }
+                }
+
+                using (StreamReader sr = new StreamReader("eanCodes.txt"))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        txtShowBarCode.Text += sr.ReadLine() + $"\r";
+                    }
+                }
+
             }
         }
 
